@@ -27,7 +27,7 @@ import {
     OFFICIAL_SITE_EN_URL,
     MARKET_ZH_URL,
     MARKET_EN_URL,
-    MYMINIFACTORY_URL
+    MYMINIFACTORY_URL, HEAD_LASER, HEAD_CNC
 } from '../../constants';
 import { actions as menuActions } from '../../flux/appbar-menu';
 import { actions as machineActions } from '../../flux/machine';
@@ -66,7 +66,8 @@ class AppLayout extends PureComponent {
         updateAutoupdateMessage: PropTypes.func.isRequired,
         updateShouldCheckForUpdate: PropTypes.func.isRequired,
         children: PropTypes.array.isRequired,
-        restartGuideTours: PropTypes.func.isRequired
+        restartGuideTours: PropTypes.func.isRequired,
+        exportFile: PropTypes.func.isRequired
     };
 
     state = {
@@ -78,6 +79,13 @@ class AppLayout extends PureComponent {
     activeTab = ''
 
     actions = {
+        onExport: (stateHeadType) => {
+            const gcodeFile = stateHeadType;
+            if (gcodeFile === null) {
+                return;
+            }
+            this.props.exportFile(gcodeFile.uploadName);
+        },
         renderSettingModal: () => {
             const onClose = () => {
                 this.setState({
@@ -521,10 +529,10 @@ class AppLayout extends PureComponent {
             UniApi.Event.on('appbar-menu:export-gcode', () => {
                 const pathname = this.props.currentModalPath || this.props.history.location.pathname;
                 switch (pathname) {
-                    case '/3dp': UniApi.Event.emit('appbar-menu:printing.export-gcode'); break;
-                    case '/laser': UniApi.Event.emit('appbar-menu:cnc-laser.export-gcode'); break;
-                    case '/cnc': UniApi.Event.emit('appbar-menu:cnc-laser.export-gcode'); break;
-                    case '/workspace': UniApi.Event.emit('appbar-menu:workspace.export-gcode'); break;
+                    case '/3dp': this.actions.onExport('printing'); break;
+                    case '/laser': this.actions.onExport(HEAD_LASER); break;
+                    case '/cnc': this.actions.onExport(HEAD_CNC); break;
+                    case '/workspace': this.actions.onExport('workspace'); break;
                     default: break;
                 }
             });
@@ -636,7 +644,8 @@ const mapDispatchToProps = (dispatch) => {
         updateShouldCheckForUpdate: (shouldAutoUpdate) => dispatch(machineActions.updateShouldCheckForUpdate(shouldAutoUpdate)),
         updateAutoupdateMessage: (message) => dispatch(machineActions.updateAutoupdateMessage(message)),
         updateIsDownloading: (isDownloading) => dispatch(machineActions.updateIsDownloading(isDownloading)),
-        restartGuideTours: (pathname, history) => dispatch(projectActions.startProject(pathname, pathname, history, true))
+        restartGuideTours: (pathname, history) => dispatch(projectActions.startProject(pathname, pathname, history, true)),
+        exportFile: (fileName) => dispatch(projectActions.exportFile(fileName))
     };
 };
 

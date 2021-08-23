@@ -49,7 +49,6 @@ import PrintingConfigurationsWidget from '../widgets/PrintingConfigurations';
 import PrintingOutputWidget from '../widgets/PrintingOutput';
 import WifiTransport from '../widgets/WifiTransport';
 import EnclosureWidget from '../widgets/Enclosure';
-import CncLaserObjectList from '../widgets/CncLaserList';
 import JobType from '../widgets/JobType';
 import PrintingVisualizer from '../widgets/PrintingVisualizer';
 import HomePage from './HomePage';
@@ -82,7 +81,6 @@ const allWidgets = {
     'laser-test-focus': LaserTestFocusWidget,
     'cnc-path': CNCPathWidget,
     'cnc-output': CncLaserOutputWidget,
-    'cnc-laser-object-list': CncLaserObjectList,
     'toolpath-list': ToolPathListBox
 };
 
@@ -116,7 +114,6 @@ function useRenderMainToolBar(setShowHomePage, setShowJobType, setShowWorkspace,
                     >
                         {i18n._('Add Background')}
                     </span>
-
                 </div>
             </Menu.Item>
             <Menu.Item
