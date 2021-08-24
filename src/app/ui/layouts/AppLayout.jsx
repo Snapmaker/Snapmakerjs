@@ -27,7 +27,7 @@ import {
     OFFICIAL_SITE_EN_URL,
     MARKET_ZH_URL,
     MARKET_EN_URL,
-    MYMINIFACTORY_URL, HEAD_LASER, HEAD_CNC
+    MYMINIFACTORY_URL
 } from '../../constants';
 import { actions as menuActions } from '../../flux/appbar-menu';
 import { actions as machineActions } from '../../flux/machine';
@@ -67,6 +67,11 @@ class AppLayout extends PureComponent {
         updateShouldCheckForUpdate: PropTypes.func.isRequired,
         children: PropTypes.array.isRequired,
         restartGuideTours: PropTypes.func.isRequired,
+
+        printingGcodeFile: PropTypes.object,
+        laserGcodeFile: PropTypes.object,
+        cncGcodeFile: PropTypes.object,
+        workspaceGcodeFile: PropTypes.object,
         exportFile: PropTypes.func.isRequired
     };
 
@@ -79,8 +84,20 @@ class AppLayout extends PureComponent {
     activeTab = ''
 
     actions = {
-        onExport: (stateHeadType) => {
-            const gcodeFile = stateHeadType;
+        onExport: (pathName) => {
+            let gcodeFile = null;
+            if (pathName === '/3dp') {
+                gcodeFile = this.props.printingGcodeFile;
+            }
+            if (pathName === '/laser') {
+                gcodeFile = this.props.laserGcodeFile;
+            }
+            if (pathName === '/cnc') {
+                gcodeFile = this.props.cncGcodeFile;
+            }
+            if (pathName === '/workspace') {
+                gcodeFile = this.props.workspaceGcodeFile;
+            }
             if (gcodeFile === null) {
                 return;
             }
@@ -528,13 +545,7 @@ class AppLayout extends PureComponent {
             });
             UniApi.Event.on('appbar-menu:export-gcode', () => {
                 const pathname = this.props.currentModalPath || this.props.history.location.pathname;
-                switch (pathname) {
-                    case '/3dp': this.actions.onExport('printing'); break;
-                    case '/laser': this.actions.onExport(HEAD_LASER); break;
-                    case '/cnc': this.actions.onExport(HEAD_CNC); break;
-                    case '/workspace': this.actions.onExport('workspace'); break;
-                    default: break;
-                }
+                this.actions.onExport(pathname);
             });
 
             this.props.history.listen(() => {
@@ -611,15 +622,23 @@ const mapStateToProps = (state) => {
     const machineInfo = state.machine;
     const { currentModalPath } = state.appbarMenu;
     const { shouldCheckForUpdate } = machineInfo;
-    const { modelGroup } = state.printing;
+    const { modelGroup, gcodeFile: printingGcodeFile } = state.printing;
+    const { gcodeFile: laserGcodeFile } = state.laser;
+    const { gcodeFile: cncGcodeFile } = state.cnc;
+    const { gcodeFile: workspaceGcodeFile } = state.workspace;
+
     // const projectState = state.project;
     return {
         currentModalPath: currentModalPath ? currentModalPath.slice(1) : currentModalPath, // exclude hash character `#`
         machineInfo,
         shouldCheckForUpdate,
         store: state,
-        modelGroup
-        // projectState
+        modelGroup,
+
+        printingGcodeFile,
+        laserGcodeFile,
+        cncGcodeFile,
+        workspaceGcodeFile
     };
 };
 

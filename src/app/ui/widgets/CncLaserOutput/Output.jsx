@@ -7,7 +7,7 @@ import { actions as workspaceActions } from '../../../flux/workspace';
 import { actions as editorActions } from '../../../flux/editor';
 import { actions as projectActions } from '../../../flux/project';
 import {
-    DISPLAYED_TYPE_TOOLPATH, PAGE_EDITOR
+    DISPLAYED_TYPE_TOOLPATH, PAGE_EDITOR, PAGE_PROCESS
 } from '../../../constants';
 
 import modal from '../../../lib/modal';
@@ -48,7 +48,7 @@ const Output = ({ headType }) => {
             }
         },
         switchToProcess: () => {
-            dispatch(editorActions.switchToPage(headType, page));
+            dispatch(editorActions.switchToPage(headType, PAGE_PROCESS));
         },
         onGenerateThumbnail: () => {
             dispatch(editorActions.setThumbnail(headType, thumbnail.current.getThumbnail()));
