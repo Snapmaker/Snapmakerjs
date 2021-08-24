@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -37,7 +37,7 @@ const Output = ({ headType }) => {
     const [showExportOptions, setShowExportOptions] = useState(false);
 
     const dispatch = useDispatch();
-    const thumbnail = useRef();
+    const thumbnail = forwardRef();
 
     const actions = {
         switchToEditPage: () => {
@@ -51,7 +51,7 @@ const Output = ({ headType }) => {
             dispatch(editorActions.switchToPage(headType, PAGE_PROCESS));
         },
         onGenerateThumbnail: () => {
-            dispatch(editorActions.setThumbnail(headType, thumbnail.current.getThumbnail()));
+            dispatch(editorActions.setThumbnail(headType, thumbnail?.current?.getThumbnail()));
         },
         onLoadGcode: async () => {
             if (gcodeFile === null) {
@@ -242,7 +242,7 @@ const Output = ({ headType }) => {
             </div>
             <Thumbnail
                 ref={thumbnail}
-                modelGroup={modelGroup}
+                myRef={thumbnail}
                 toolPathGroup={toolPathGroup}
             />
             {renderWorkspace()}

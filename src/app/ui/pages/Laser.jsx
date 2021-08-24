@@ -347,7 +347,6 @@ function Laser({ location }) {
     const page = useSelector(state => state?.laser?.page);
     const history = useHistory();
     const thumbnail = useRef();
-    const modelGroup = useSelector(state => state[HEAD_LASER]?.modelGroup, shallowEqual);
     const toolPathGroup = useSelector(state => state[HEAD_LASER]?.toolPathGroup, shallowEqual);
     useUnsavedTitle(pageHeadType);
 
@@ -704,7 +703,6 @@ function Laser({ location }) {
                 <Thumbnail
                     ref={thumbnail}
                     toolPathGroup={toolPathGroup}
-                    modelGroup={modelGroup}
                 />
             </ProjectLayout>
             {warningRemovingModels}
