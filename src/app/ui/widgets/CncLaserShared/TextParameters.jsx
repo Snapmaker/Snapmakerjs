@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -9,16 +9,14 @@ import TipTrigger from '../../components/TipTrigger';
 import Anchor from '../../components/Anchor';
 import SvgIcon from '../../components/SvgIcon';
 
-const TextParameters = ({ modifyText, config, disabled }) => {
+const TextParameters = ({ modifyText, disabled }) => {
+    const config = useSelector(state => state?.cnc?.modelGroup?.getSelectedModel()?.config);
     const fonts = useSelector(state => state?.text?.fonts);
     const fontOptions = fonts.map((font) => ({
         label: font.displayName,
         value: font.fontFamily
     }));
     const { text, 'font-size': fontSize, 'font-family': fontFamily } = config;
-
-    useEffect(() => {
-    }, [config, text]);
 
     const [expanded, setExpanded] = useState(true);
 
