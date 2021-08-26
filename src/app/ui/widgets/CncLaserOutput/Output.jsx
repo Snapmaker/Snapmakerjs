@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -37,7 +37,7 @@ const Output = ({ headType }) => {
     const [showExportOptions, setShowExportOptions] = useState(false);
 
     const dispatch = useDispatch();
-    const thumbnail = forwardRef();
+    const thumbnail = useRef();
 
     const actions = {
         switchToEditPage: () => {
