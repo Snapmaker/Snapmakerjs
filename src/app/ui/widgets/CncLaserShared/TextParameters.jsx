@@ -9,8 +9,8 @@ import TipTrigger from '../../components/TipTrigger';
 import Anchor from '../../components/Anchor';
 import SvgIcon from '../../components/SvgIcon';
 
-const TextParameters = ({ modifyText, disabled }) => {
-    const config = useSelector(state => state?.cnc?.modelGroup?.getSelectedModel()?.config);
+const TextParameters = ({ headType, modifyText, disabled }) => {
+    const config = useSelector(state => state[headType]?.modelGroup?.getSelectedModel()?.config);
     const fonts = useSelector(state => state?.text?.fonts);
     const fontOptions = fonts.map((font) => ({
         label: font.displayName,
@@ -128,14 +128,8 @@ const TextParameters = ({ modifyText, disabled }) => {
 };
 
 TextParameters.propTypes = {
+    headType: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
-    config: PropTypes.shape({
-        text: PropTypes.string,
-        'font-size': PropTypes.string,
-        'font-family': PropTypes.string,
-        lineHeight: PropTypes.number,
-        alignment: PropTypes.string
-    }),
 
     modifyText: PropTypes.func.isRequired
 };
