@@ -219,7 +219,6 @@ class WifiTransport extends PureComponent {
         for (let i = 0; i < 5; i++) {
             this.changeNameInput[i] = React.createRef();
         }
-        UniApi.Event.on('appbar-menu:workspace.export-gcode', this.actions.onExport);
         UniApi.Event.on('appbar-menu:workspace.import', this.actions.importFile);
         if (this.props.gcodeFiles.length > 0) {
             this.actions.onSelectFile(this.props.gcodeFiles[0].uploadName);
@@ -237,7 +236,6 @@ class WifiTransport extends PureComponent {
         for (let i = 0; i < 5; i++) {
             this.changeNameInput[i] = null;
         }
-        UniApi.Event.off('appbar-menu:workspace.export-gcode', this.actions.onExport);
         UniApi.Event.off('appbar-menu:workspace.import', this.actions.importFile);
     }
 
